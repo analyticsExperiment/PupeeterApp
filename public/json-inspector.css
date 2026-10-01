@@ -1,0 +1,39 @@
+.json-inspector { display: block; min-width: 0; border: 1px solid #cdd5db; border-radius: 6px; background: #fff; color: #25313b; overflow: hidden; }
+.ji-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; padding: 10px; border-bottom: 1px solid #dce1e4; background: #f5f7f8; }
+.ji-toolbar .ji-search { flex: 1 1 180px; min-width: 120px; width: auto; height: 34px; margin: 0; padding: 6px 10px; border: 1px solid #c9d1d8; border-radius: 4px; background: #fff; font-size: 13px; }
+.ji-segments { display: flex; flex: 0 0 auto; border: 1px solid #c9d1d8; border-radius: 4px; overflow: hidden; }
+.ji-toolbar button { height: 32px; margin: 0; padding: 5px 10px; border: 0; border-radius: 0; font-size: 12px; background: transparent; color: #334551; white-space: nowrap; }
+.ji-toolbar button[aria-pressed="true"] { background: #dcebf0; color: #164c5e; box-shadow: inset 0 -2px #297085; }
+.ji-toolbar button:hover { background: #e4ebef; }
+.ji-toolbar .ji-icon { display: grid; place-items: center; width: 32px; padding: 7px; border-radius: 4px; }
+.ji-commands { display: flex; flex: 0 0 auto; gap: 3px; margin-left: auto; }
+.ji-icon img { display: block; width: 18px; height: 18px; }
+.ji-info { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 7px 12px; border-bottom: 1px solid #e2e7eb; font-size: 12px; color: #586776; }
+.ji-status { color: #226a78; }
+.ji-tree { height: min(52vh, 520px); min-height: 160px; overflow: auto; overscroll-behavior: contain; padding: 8px 10px; font: 13px/1.8 Consolas, 'Courier New', monospace; tab-size: 2; scrollbar-gutter: stable; }
+.ji-tree details { margin: 0; padding: 0; border: 0; background: transparent; }
+.ji-tree .ji-row { display: list-item; list-style: disclosure-closed inside; padding: 2px 4px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-radius: 3px; }
+.ji-tree details[open] > .ji-row { list-style-type: disclosure-open; }
+.ji-row:hover, .ji-leaf:hover { background: #f0f5f8; }
+.ji-tree .ji-children { margin: 0 0 3px 9px; padding: 0 0 0 14px; border-left: 1px solid #dde4e9; }
+.ji-tree .ji-leaf { padding: 1px 4px 1px 16px; overflow-wrap: anywhere; white-space: pre-wrap; }
+.ji-key { color: #824617; }
+.ji-value { color: #25313b; }
+.ji-string { color: #16733f; }
+.ji-number { color: #1759a8; }
+.ji-boolean { color: #7c368b; }
+.ji-null { color: #616b76; font-style: italic; }
+.ji-type { color: #697580; margin: 0 8px; font-size: 12px; }
+.ji-event { color: #174b77; font-weight: 700; margin-right: 4px; }
+.ji-preview { color: #5b6672; }
+.ji-tree mark { background: #ffe699; color: #20272b; }
+.ji-tree .ji-empty { padding: 16px; color: #616b76; }
+.ji-tree .ji-more { display: block; margin: 8px 16px; padding: 5px 10px; color: #185a70; border: 1px solid #cdd5db; background: #f5f8fa; border-radius: 4px; font: inherit; }
+.ji-tree .ji-raw { margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; color: #25313b; font: inherit; white-space: pre-wrap; overflow-wrap: anywhere; }
+.modal-content:has(json-inspector) { min-width: 0; }
+@media (max-width: 600px) {
+  .ji-toolbar { gap: 5px; padding: 8px; }
+  .ji-toolbar .ji-search { flex-basis: 100%; order: -1; font-size: 16px; }
+  .ji-tree { padding: 6px; height: 48vh; font-size: 12px; }
+  .ji-tree .ji-children { margin-left: 5px; padding-left: 9px; }
+}

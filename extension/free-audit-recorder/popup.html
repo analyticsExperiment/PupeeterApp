@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Free Audit Recorder</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="popup">
+    <header>
+      <h1>Free Audit Recorder</h1>
+      <p id="connectionStatus">Checking connection...</p>
+    </header>
+
+    <label>Free Audit app URL
+      <input id="baseUrl" type="url" value="http://localhost:3000" />
+    </label>
+    <section class="account-panel">
+      <h2>Free Audit account</h2>
+      <p id="accountName">Sign in through the local app to connect this extension.</p>
+      <div class="grid">
+        <button id="connectAccount">Sign in via app</button>
+        <button id="disconnectAccount" disabled>Disconnect</button>
+      </div>
+      <details>
+        <summary>Advanced: paste a pairing token</summary>
+        <label>Pairing token
+          <input id="pairingToken" type="password" placeholder="fat_..." />
+        </label>
+      </details>
+    </section>
+
+    <section class="attached-panel">
+      <h2>Attached Chrome audit</h2>
+      <p>Audit in this normal Chrome tab. With automatic visits enabled, the extension discovers same-origin pages from links and sitemaps and aims for the config's target count.</p>
+      <label>Audit config
+        <select id="attachedConfig"><option value="">Loading configs...</option></select>
+      </label>
+      <label class="check-label"><input id="autoCrawl" type="checkbox" checked /> Automatically visit discovered pages</label>
+      <p class="muted">Turn this off to browse manually. A site block or lack of reachable URLs can end a run below the target.</p>
+      <div class="grid">
+        <button id="startAttached">Start audit</button>
+        <button id="stopAttached" disabled>Stop &amp; save</button>
+      </div>
+      <p id="attachedStatus">No attached audit in this tab.</p>
+      <a id="attachedReport" href="#" target="_blank" rel="noopener" hidden>Open last report</a>
+    </section>
+
+    <h2>Journey recorder</h2>
+
+    <div class="grid">
+      <button id="startRecording">Start</button>
+      <button id="pauseRecording">Pause</button>
+      <button id="stopRecording">Stop</button>
+      <button id="clearRecording">Clear</button>
+    </div>
+
+    <div class="grid">
+      <button id="copyJson">Copy JSON</button>
+      <button id="exportJson">Export JSON</button>
+    </div>
+
+    <label>Save name
+      <input id="saveName" placeholder="Recorded flow" />
+    </label>
+    <div class="grid">
+      <button id="saveFlow">Save Flow Template</button>
+      <button id="saveConfig">Save Interaction Config</button>
+    </div>
+    <button id="openApp" class="wide">Open Free Audit</button>
+
+    <section>
+      <h2>Preview Steps</h2>
+      <ol id="stepPreview"></ol>
+    </section>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>

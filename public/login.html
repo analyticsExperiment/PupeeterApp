@@ -1,0 +1,34 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sign In - Free Audit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="login-page">
+    <div class="login-card">
+      <h1>Welcome to Free Audit</h1>
+      <p class="sub">Sign in to run new audits and review past results.</p>
+      <div id="loginError" class="login-error hidden"></div>
+      <form id="loginForm" autocomplete="on" novalidate>
+        <div class="form-row">
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" autocomplete="username" required />
+        </div>
+        <div class="form-row">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required />
+        </div>
+        <div class="actions" style="justify-content:flex-start; gap:12px;">
+          <button type="submit">Sign In</button>
+          <a class="button-style" href="/register">Sign Up</a>
+        </div>
+      </form>
+      <p class="muted hint">Default credentials: <code>admin / audit123</code></p>
+    </div>
+    <script src="/session.js"></script>
+    <script src="/login.js"></script>
+  </body>
+</html>
+

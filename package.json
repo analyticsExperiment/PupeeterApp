@@ -1,0 +1,39 @@
+{
+  "name": "pupetter-analysis",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon --watch server.js --watch src --watch public --ext js,html,css,json --signal SIGTERM server.js",
+    "qa:deep": "node tests/qa/deep-regression.js",
+    "qa:phase2": "node tests/qa/phase2-adversarial.js",
+    "qa:open-states": "node tests/qa/open-state-visual.js",
+    "qa:api": "node tests/api/agent-api-regression.js",
+    "qa:mcp": "node tests/mcp/mcp-smoke.js",
+    "qa:extension": "node tests/qa/extension-recorder-smoke.js",
+    "qa:attached-audit": "node tests/qa/attached-audit-regression.js",
+    "qa:reliability": "node --test tests/qa/reliability-regression.js",
+    "qa:console": "node --test tests/qa/console-capture-regression.js",
+    "qa:json": "node --test tests/qa/json-inspector-regression.js",
+    "qa:reports": "node --test tests/qa/report-ui-regression.js",
+    "mcp:free-audit": "node mcp/free-audit-mcp.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Self-hosted browser auditing for tags, cookies, dataLayer events, and interaction flows.",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "better-sqlite3": "^12.2.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "playwright": "1.63.0",
+    "puppeteer": "25.11.0",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

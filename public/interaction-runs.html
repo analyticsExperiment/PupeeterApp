@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interaction Runs - Free Audit</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+  <div class="container console-page">
+    <div class="page-heading">
+      <div>
+        <h1>Interaction Runs</h1>
+        <p class="sub">Review guided journey runs and open their step-by-step reports.</p>
+      </div>
+      <div class="toolbar">
+        <a class="button-style" href="/interaction-configs.html">New Interaction Run</a>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="toolbar">
+        <input id="runSearch" type="text" placeholder="Search runs..." />
+      </div>
+      <div id="interactionRunsList" class="table-wrap"></div>
+    </section>
+  </div>
+
+  <script src="/session.js"></script>
+  <script src="/api.js"></script>
+  <script src="/shared-layout.js"></script>
+  <script src="/interaction-runs.js"></script>
+</body>
+
+</html>

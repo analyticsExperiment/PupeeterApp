@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interaction Report - Free Audit</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/json-inspector.css" />
+  <link rel="stylesheet" href="/report-ui.css" />
+</head>
+
+<body>
+  <div class="container console-page interaction-report-page">
+    <div class="page-heading">
+      <div>
+        <h1>Interaction Report</h1>
+        <p id="reportSubtitle" class="sub">Loading guided journey results...</p>
+      </div>
+      <div class="toolbar">
+        <a class="pill" href="/interaction-configs.html">Interaction Configs</a>
+        <a class="pill" href="/interaction-runs.html">Interaction Runs</a>
+        <a id="downloadInteractionCsv" class="pill hidden" href="#">Download CSV</a>
+        <a id="downloadInteractionJson" class="pill hidden" href="#">Download JSON</a>
+      </div>
+    </div>
+
+    <section id="interactionReportStatus" class="section status"></section>
+    <section id="interactionReportSummary" class="section hidden"></section>
+    <section id="interactionStepResults" class="step-result-list"></section>
+  </div>
+
+  <div id="interactionModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-content interaction-modal-content">
+      <div class="modal-header">
+        <div>
+          <button id="interactionModalBack" class="pill hidden" type="button">Back</button>
+          <h2 id="interactionModalTitle"></h2>
+        </div>
+        <button id="interactionModalClose" type="button">Close</button>
+      </div>
+      <div id="interactionModalBody" class="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="/session.js"></script>
+  <script src="/api.js"></script>
+  <script src="/shared-layout.js"></script>
+  <script src="/json-inspector.js"></script>
+  <script src="/report-ui.js"></script>
+  <script src="/interaction-report.js"></script>
+</body>
+
+</html>

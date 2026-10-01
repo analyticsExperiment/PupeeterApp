@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interaction Configs - Free Audit</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+  <div class="container console-page">
+    <datalist id="ruleTagOptions"></datalist>
+    <div class="page-heading">
+      <div>
+        <h1>Interaction Configs</h1>
+        <p class="sub">Build guided browser journeys separately from crawl-based audit configs.</p>
+      </div>
+      <div class="toolbar">
+        <button id="backToInteractionConfigs" class="pill hidden" type="button">Back to Interactions</button>
+        <button id="newInteractionConfig" class="button-style" type="button">New Interaction Config</button>
+      </div>
+    </div>
+
+    <div class="config-console interaction-console">
+      <aside class="section config-left">
+        <div class="flow-header">
+          <h2>Your Interaction Configs</h2>
+        </div>
+        <input id="interactionSearch" type="text" placeholder="Search interaction configs..." />
+        <div id="interactionConfigList" class="config-list"></div>
+      </aside>
+
+      <section class="section config-center">
+        <div class="form-grid two">
+          <div class="form-row">
+            <label>Config Name</label>
+            <input id="interactionName" type="text" placeholder="Checkout journey" />
+          </div>
+          <div class="form-row">
+            <label>Description</label>
+            <input id="interactionDescription" type="text" placeholder="What this journey validates" />
+          </div>
+        </div>
+
+        <div class="tabs">
+          <button type="button" class="tab active" data-tab="general">General</button>
+          <button type="button" class="tab" data-tab="steps">Journey Steps</button>
+          <button type="button" class="tab" data-tab="templates">Templates</button>
+          <button type="button" class="tab" data-tab="rules">Rules</button>
+          <button type="button" class="tab" data-tab="advanced">Advanced Settings</button>
+        </div>
+
+        <div class="tab-panel active" data-panel="general">
+          <div class="form-row">
+            <label>Starting URL</label>
+            <input id="interactionStartingUrl" type="text" placeholder="https://www.example.com" />
+          </div>
+          <div class="form-grid two">
+            <div class="form-row">
+              <label>Wait Until</label>
+              <select id="interactionWaitUntil">
+                <option value="domcontentloaded">DOM Loaded</option>
+                <option value="load">Window Loaded</option>
+                <option value="networkidle2">Network Idle</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label>Automation Module</label>
+              <select id="interactionBrowserEngine">
+                <option value="playwright">Playwright</option>
+                <option value="puppeteer">Puppeteer</option>
+              </select>
+            </div>
+          </div>
+          <label class="check-label"><input id="interactionShowBrowser" type="checkbox" checked /> Show Browser (Debug Mode)</label>
+          <label class="check-label"><input id="interactionStopOnFailure" type="checkbox" checked /> Stop journey on first failed step</label>
+        </div>
+
+        <div class="tab-panel" data-panel="steps">
+          <div class="flow-header">
+            <div>
+              <h2>Journey Steps</h2>
+              <p class="muted">Steps run exactly in this order. This does not crawl pages.</p>
+            </div>
+            <button id="addInteractionStep" class="button-style" type="button">+ Add Step</button>
+          </div>
+          <div id="interactionSteps" class="journey-step-list"></div>
+        </div>
+
+        <div class="tab-panel" data-panel="templates">
+          <div class="flow-header">
+            <div>
+              <h2>Import Flow Templates</h2>
+              <p class="muted">Templates are reusable; importing copies their steps into this executable config.</p>
+            </div>
+            <a class="pill" href="/interaction-flow-templates.html">Manage Templates</a>
+          </div>
+          <div id="templateImportList" class="picker-list inline-picker"></div>
+          <div class="actions">
+            <button id="appendTemplateSteps" type="button">Append Selected Template Steps</button>
+            <button id="replaceTemplateSteps" type="button">Replace Steps With Selected Templates</button>
+          </div>
+        </div>
+
+        <div class="tab-panel" data-panel="rules">
+          <div class="flow-header">
+            <div>
+              <h2>Linked Rule Sets</h2>
+              <p class="muted">Rules are evaluated against each journey step using step-level requests, cookies, console, and dataLayer snapshots.</p>
+            </div>
+            <a class="pill" href="/rule-sets.html">Manage Rules</a>
+          </div>
+          <div id="ruleSetImportList" class="picker-list inline-picker"></div>
+        </div>
+
+        <div class="tab-panel" data-panel="advanced">
+          <p class="muted">Optional advanced settings. Leave as valid JSON.</p>
+          <textarea id="interactionAdvanced" rows="12" placeholder='{"userAgent":"","acceptLanguage":"en-US,en;q=0.9","navigationTimeoutMs":60000}'></textarea>
+        </div>
+
+        <div id="interactionRunStatus" class="status audit-run-status hidden">
+          <div id="interactionRunContext" class="audit-run-context"></div>
+          <div class="progress"><div id="interactionProgressBar"></div></div>
+          <div id="interactionStatusText"></div>
+          <div id="interactionLogStream" class="log-stream compact-log"></div>
+        </div>
+
+        <div class="actions spread">
+          <button id="deleteInteractionConfig" class="danger-button" type="button">Delete</button>
+          <div class="toolbar">
+            <button id="saveInteractionAsNew" type="button">Save As New</button>
+            <button id="saveInteractionConfig" class="button-style" type="button">Save Config</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="section config-right">
+        <h2>Journey Summary</h2>
+        <div id="interactionSummary" class="summary-list"></div>
+        <h2>Preview Journey</h2>
+        <div id="journeyPreview" class="timeline-list"></div>
+        <h2>Quick Actions</h2>
+        <div class="quick-actions">
+          <button id="runInteractionConfig" class="button-style" type="button">Run Interaction</button>
+          <button id="duplicateInteractionConfig" type="button">Duplicate</button>
+          <a id="viewInteractionRuns" class="pill" href="/interaction-runs.html">View Interaction Runs</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script src="/session.js"></script>
+  <script src="/api.js"></script>
+  <script src="/shared-layout.js"></script>
+  <script src="/rules.js?v=20260515a"></script>
+  <script src="/interaction-configs.js"></script>
+</body>
+
+</html>

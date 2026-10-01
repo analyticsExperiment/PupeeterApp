@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Free Audit Rule Sets</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+  <div class="container console-page">
+    <datalist id="ruleTagOptions"></datalist>
+    <div class="page-heading">
+      <div>
+        <h1>Rules</h1>
+        <p class="sub">Create reusable rule sets that can be attached to audit configs or applied to a new audit.</p>
+      </div>
+      <div class="toolbar">
+        <button class="pill hidden" id="backToRuleSets" type="button">Back to Rule Sets</button>
+        <button class="button-style" id="newRuleSet" type="button">New Rule Set</button>
+      </div>
+    </div>
+
+    <div class="management-layout two-panel">
+      <aside class="section manager-list-panel">
+        <input id="ruleSetSearch" type="text" placeholder="Search rule sets..." />
+        <div id="ruleSetList" class="config-list"></div>
+      </aside>
+
+      <section class="section manager-editor-panel">
+        <div class="form-grid two">
+          <div class="form-row">
+            <label>Rule Set Name</label>
+            <input id="ruleSetName" type="text" placeholder="Adobe Analytics required" />
+          </div>
+          <div class="form-row">
+            <label>Description</label>
+            <input id="ruleSetDescription" type="text" placeholder="Validation purpose" />
+          </div>
+        </div>
+        <div class="flow-builder">
+          <div class="flow-header">
+            <h2>Rules</h2>
+            <button type="button" id="addRule">+ Add Rule</button>
+          </div>
+          <div id="rulesList"></div>
+        </div>
+        <div class="actions spread">
+          <div class="toolbar">
+            <button id="deleteRuleSet" class="danger-button" type="button">Delete</button>
+            <button id="duplicateRuleSet" type="button">Duplicate</button>
+            <button id="applyRuleSet" type="button">Apply To Create Audit</button>
+          </div>
+          <button id="saveRuleSet" class="button-style" type="button">Save Rule Set</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="/session.js"></script>
+  <script src="/api.js"></script>
+  <script src="/shared-layout.js"></script>
+  <script src="/rules.js?v=20260515a"></script>
+  <script src="/rule-sets.js?v=20260515a"></script>
+</body>
+
+</html>

@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Free Audit Configs</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+  <div class="container console-page">
+    <datalist id="ruleTagOptions"></datalist>
+    <div class="page-heading">
+      <div>
+        <h1>Audit Configs</h1>
+        <p class="sub">Save reusable audit setups, attach templates, and run audits from a controlled configuration.</p>
+      </div>
+      <div class="toolbar">
+        <button id="backToConfigs" class="pill hidden" type="button">Back to Configs</button>
+        <button id="newConfig" class="button-style" type="button">New Config</button>
+      </div>
+    </div>
+
+    <div class="config-console">
+      <aside class="section config-left">
+        <div class="flow-header">
+          <h2>Your Audit Configs</h2>
+        </div>
+        <input id="configSearch" type="text" placeholder="Search configs..." />
+        <div id="configList" class="config-list"></div>
+      </aside>
+
+      <section class="section config-center">
+        <div class="form-grid two">
+          <div class="form-row">
+            <label>Config Name</label>
+            <input id="configName" type="text" placeholder="Ecommerce full scan" />
+          </div>
+          <div class="form-row">
+            <label>Description</label>
+            <input id="configDescription" type="text" placeholder="What this config is for" />
+          </div>
+        </div>
+        <label class="check-label config-default-row">
+          <input type="checkbox" id="configDefault" />
+          Make this the default config
+        </label>
+
+        <div class="tabs">
+          <button type="button" class="tab active" data-tab="general">General</button>
+          <button type="button" class="tab" data-tab="urls">URL Sources</button>
+          <button type="button" class="tab" data-tab="pre">Pre-Audit Actions</button>
+          <button type="button" class="tab" data-tab="post">On Page Actions</button>
+          <button type="button" class="tab" data-tab="rules">Rules</button>
+          <button type="button" class="tab" data-tab="advanced">Advanced Settings</button>
+        </div>
+
+        <div class="tab-panel active" data-panel="general">
+          <div class="form-row">
+            <label>Domain / Starting URL</label>
+            <input id="configDomain" type="text" placeholder="https://www.example.com" />
+          </div>
+          <div class="form-grid three">
+            <div class="form-row">
+              <label>Target Pages</label>
+              <input id="configMaxPages" type="number" min="1" value="15" />
+              <p class="muted">When Starting URLs are empty, the audit discovers and visits pages until this target is reached. It reports a shortfall if the site has fewer reachable pages or blocks access.</p>
+            </div>
+            <div class="form-row">
+              <label>Same Origin Only</label>
+              <select id="configSameOrigin"><option value="true">Yes</option><option value="false">No</option></select>
+            </div>
+            <div class="form-row">
+              <label>Wait Until</label>
+              <select id="configWaitUntil">
+                <option value="domcontentloaded">DOM Loaded</option>
+                <option value="load">Window Loaded</option>
+                <option value="networkidle2">Network Idle</option>
+              </select>
+            </div>
+          </div>
+          <label class="check-label"><input type="checkbox" id="configShowBrowser" checked /> Show Browser (Debug Mode)</label>
+          <div class="settings-panel">
+            <div>
+              <h3>Runtime Engine</h3>
+              <p class="muted">Choose the automation engine and tab concurrency for this audit.</p>
+            </div>
+            <div class="form-grid three">
+              <div class="form-row">
+                <label>Automation Engine</label>
+                <select id="configBrowserEngine">
+                  <option value="puppeteer">Puppeteer</option>
+                  <option value="playwright">Playwright</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label>Simultaneous Workers</label>
+                <select id="configWorkerMode">
+                  <option value="ram-protected">RAM protected (2 tabs max)</option>
+                  <option value="5">5 tabs in one session</option>
+                  <option value="10">10 tabs in one session</option>
+                  <option value="custom">Custom</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label>Custom Workers</label>
+                <input id="configCustomWorkers" type="number" min="1" max="20" value="2" />
+              </div>
+            </div>
+            <p class="muted">All workers use the same browser context, so cookies/session state remain shared across tabs.</p>
+          </div>
+        </div>
+
+        <div class="tab-panel" data-panel="urls">
+          <div class="form-row">
+            <label>Starting URLs</label>
+            <textarea id="configUrlSources" rows="8" placeholder="https://www.example.com&#10;https://www.example.com/products"></textarea>
+          </div>
+          <label class="check-label"><input type="checkbox" id="configIncludeSitemaps" checked /> Include URLs from sitemap.xml and robots.txt</label>
+          <p class="muted">Leave Starting URLs empty to discover pages from links and, when enabled, sitemap.xml and robots.txt sitemap references. Robots.txt alone is not a list of pages. If the site blocks access, add specific URLs or ask the owner for audit access.</p>
+        </div>
+
+        <div class="tab-panel" data-panel="pre">
+          <div class="config-builder-block">
+            <div class="flow-header">
+              <div>
+                <h2>Common Pre-Audit Action Templates</h2>
+                <p class="muted">Select reusable templates if available. They run before the config-specific steps below.</p>
+            </div>
+            <button class="pill" id="choosePreTemplates" type="button">Choose Common Templates</button>
+          </div>
+          <select id="preTemplateSelect" class="template-select" multiple size="6"></select>
+          <div id="preTemplateSummary" class="template-summary"></div>
+          <div id="preTemplateEmpty" class="muted template-empty hidden">No common pre-audit templates yet. You can still add config-specific actions below.</div>
+        </div>
+          <div class="config-builder-block">
+            <div class="flow-header">
+              <div>
+                <h2>Config-Specific Pre-Audit Actions</h2>
+                <p class="muted">These steps belong only to this audit config and run once before crawling continues.</p>
+              </div>
+              <button id="addConfigPreStep" type="button">+ Add Pre-Audit Action</button>
+            </div>
+            <div id="configPreSteps"></div>
+          </div>
+        </div>
+
+        <div class="tab-panel" data-panel="post">
+          <div class="config-builder-block">
+            <div class="flow-header">
+              <div>
+                <h2>Common On Page Templates</h2>
+                <p class="muted">Select reusable templates if available. They run before the config-specific steps below.</p>
+            </div>
+            <button class="pill" id="choosePostTemplates" type="button">Choose Common Templates</button>
+          </div>
+          <select id="postTemplateSelect" class="template-select" multiple size="6"></select>
+          <div id="postTemplateSummary" class="template-summary"></div>
+          <div id="postTemplateEmpty" class="muted template-empty hidden">No common On Page templates yet. You can still add config-specific actions below.</div>
+        </div>
+          <div class="config-builder-block">
+            <div class="flow-header">
+              <div>
+                <h2>Config-Specific On Page Actions</h2>
+                <p class="muted">These steps belong only to this audit config and run on every scanned page.</p>
+              </div>
+              <button id="addConfigPostStep" type="button">+ Add On Page Action</button>
+            </div>
+            <div id="configPostSteps"></div>
+          </div>
+        </div>
+
+        <div class="tab-panel" data-panel="rules">
+          <div class="config-builder-block">
+            <div class="flow-header">
+              <div>
+                <h2>Common Rule Sets</h2>
+                <p class="muted">Select reusable rule sets if available. They are evaluated before config-specific rules below.</p>
+            </div>
+            <button class="pill" id="chooseRuleSets" type="button">Choose Common Rule Sets</button>
+          </div>
+          <select id="ruleSetSelect" class="template-select" multiple size="6"></select>
+          <div id="ruleSetSummary" class="template-summary"></div>
+          <div id="ruleSetEmpty" class="muted template-empty hidden">No common rule sets yet. You can still add config-specific rules below.</div>
+        </div>
+          <div class="config-builder-block">
+            <div class="flow-header">
+              <div>
+                <h2>Config-Specific Rules</h2>
+                <p class="muted">These rules belong only to this audit config and keep the existing runner-compatible rule format.</p>
+              </div>
+              <div class="toolbar">
+                <button type="button" id="clearConfigRules">Clear Rules</button>
+                <button type="button" id="addRule">+ Add Rule</button>
+              </div>
+            </div>
+            <div id="rulesList"></div>
+          </div>
+        </div>
+
+        <div class="tab-panel" data-panel="advanced">
+          <p class="muted">Optional inline payload fragments. Leave as valid JSON.</p>
+          <textarea id="configOptions" rows="12" placeholder='{"preAuditActions":[],"postAuditActions":[],"rules":[]}'></textarea>
+        </div>
+
+        <div class="actions spread">
+          <button id="deleteConfig" class="danger-button" type="button">Delete Config</button>
+          <div class="toolbar">
+            <button id="saveAsConfig" type="button">Save As New</button>
+            <button id="saveConfig" class="button-style" type="button">Save Config</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="section config-right">
+        <h2>Config Summary</h2>
+        <div id="configSummary" class="summary-list"></div>
+        <h2>Preview Crawl Flow</h2>
+        <div id="crawlPreview" class="timeline-list"></div>
+        <h2>Quick Actions</h2>
+        <div class="quick-actions">
+          <button id="runConfig" class="button-style" type="button">Run Audit with this Config</button>
+          <button id="loadConfig" type="button">Back to Run Console</button>
+          <button id="duplicateConfig" type="button">Duplicate Config</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script src="/session.js"></script>
+  <script src="/api.js"></script>
+  <script src="/shared-layout.js"></script>
+  <script src="/action-builder.js"></script>
+  <script src="/rules.js?v=20260515a"></script>
+  <script src="/audit-configs.js?v=20260515a"></script>
+</body>
+
+</html>

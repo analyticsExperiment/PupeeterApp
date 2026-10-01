@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Free Audit Dashboard</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+  <div class="container console-page">
+    <div class="page-heading">
+      <div>
+        <h1>Dashboard</h1>
+        <p class="sub">Run audits, review recent history, and jump into saved audit setups.</p>
+      </div>
+      <div class="toolbar">
+        <a class="button-style" href="/">Create Audit</a>
+        <a class="pill" href="/audit-configs.html">Audit Configs</a>
+      </div>
+    </div>
+
+    <div class="summary" id="dashboardMetrics">
+      <div class="card"><div class="muted">Audits</div><div style="font-size:22px">-</div></div>
+      <div class="card"><div class="muted">Completed</div><div style="font-size:22px">-</div></div>
+      <div class="card"><div class="muted">Failed Rules</div><div style="font-size:22px">-</div></div>
+      <div class="card"><div class="muted">Saved Configs</div><div style="font-size:22px">-</div></div>
+    </div>
+
+    <div class="console-grid-two">
+      <section class="section">
+        <div class="flow-header">
+          <h2>Recent Audits</h2>
+          <a class="pill" href="/audits.html">View All</a>
+        </div>
+        <div class="table-wrap dashboard-table-wrap" tabindex="0" role="region" aria-label="Recent audits">
+        <table class="table">
+          <thead><tr><th>Started</th><th>Domain</th><th>Status</th><th>Config</th><th></th></tr></thead>
+          <tbody id="recentAudits"><tr><td colspan="5" class="muted">Loading...</td></tr></tbody>
+        </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="flow-header">
+          <h2>Audit Configs</h2>
+          <a class="pill" href="/audit-configs.html">Manage</a>
+        </div>
+        <div id="configShortcuts" class="config-list compact-list"></div>
+      </section>
+    </div>
+  </div>
+
+  <script src="/session.js"></script>
+  <script src="/api.js"></script>
+  <script src="/shared-layout.js"></script>
+  <script src="/dashboard.js"></script>
+</body>
+
+</html>

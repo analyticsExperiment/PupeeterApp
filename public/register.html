@@ -1,0 +1,41 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sign Up - Free Audit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="login-page">
+    <div class="login-card">
+      <h1>Create your account</h1>
+      <p class="sub">Sign up to run audits and review history in Free Audit.</p>
+      <div id="registerError" class="login-error hidden"></div>
+      <form id="registerForm" autocomplete="on" novalidate>
+        <div class="form-row">
+          <label for="displayName">Display Name</label>
+          <input id="displayName" name="displayName" type="text" autocomplete="name" placeholder="Your name" />
+        </div>
+        <div class="form-row">
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" autocomplete="username" placeholder="3-32 chars" required />
+        </div>
+        <div class="form-row">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="new-password" placeholder="At least 8 characters" required />
+        </div>
+        <div class="form-row">
+          <label for="confirmPassword">Confirm Password</label>
+          <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" required />
+        </div>
+        <div class="actions" style="justify-content:flex-start; gap:12px;">
+          <button type="submit">Create Account</button>
+          <a class="button-style" href="/login">Back to Login</a>
+        </div>
+      </form>
+    </div>
+    <script src="/session.js"></script>
+    <script src="/register.js"></script>
+  </body>
+</html>
+

@@ -1,0 +1,217 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Free Audit</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/json-inspector.css" />
+  <link rel="stylesheet" href="/report-ui.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1 id="consoleHeading">Create Audit</h1>
+    <p class="sub" id="consoleIntro">Enter a domain, optional crawl limits, interaction flow, and validation rules. Free Audit will crawl pages,
+      classify network-detected tags, capture dataLayer contents and cookies, then render a report.</p>
+    <div class="flex" id="consoleShortcuts" style="margin-bottom:12px; gap:8px; align-items:center;">
+      <a class="pill" href="/audits.html">View Audit History</a>
+      <a class="pill" href="/audit-configs.html">Audit Configs</a>
+      <button class="pill" id="logoutBtn" data-action="logout" type="button">Logout</button>
+    </div>
+
+    <section id="configLanding" class="config-launcher hidden" aria-live="polite">
+      <div class="launcher-hero">
+        <div>
+          <p class="eyebrow">Run Audits From Saved Configs</p>
+          <h2>Choose an audit config to run, edit, or duplicate.</h2>
+          <p class="muted">Saved configs keep your URL sources, action steps, rules, and crawl settings together so every audit starts from a controlled setup.</p>
+        </div>
+        <div class="launcher-actions">
+          <a class="button-style" href="/?scratch=1">Start From Scratch</a>
+          <a class="button-style" href="/audit-configs.html?new=1">Create Audit Config</a>
+          <a class="pill" href="/audit-configs.html">Manage Configs</a>
+        </div>
+      </div>
+      <div id="configLandingContent"></div>
+    </section>
+
+    <form id="auditForm" class="hidden">
+      <datalist id="ruleTagOptions"></datalist>
+      <div class="flow-builder create-config-panel">
+        <div class="flow-header">
+          <div>
+            <h2>Start From Saved Config</h2>
+            <p class="muted">Choose a reusable audit setup, or keep this empty to start from scratch.</p>
+          </div>
+          <a class="pill" href="/audit-configs.html">Manage Configs</a>
+        </div>
+        <div class="form-grid three">
+          <div class="form-row">
+            <label>Saved Config</label>
+            <select id="configPicker">
+              <option value="">Start from scratch</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>Loaded Config</label>
+            <input id="loadedConfigName" type="text" readonly placeholder="None" />
+          </div>
+          <div class="form-row inline-actions-row">
+            <button type="button" id="loadConfig">Load Config</button>
+            <button type="button" id="saveCurrentConfig">Save Current Setup</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Domain or URL (Optional when Starting URLs are provided)</label>
+        <input type="text" id="domain" placeholder="https://www.example.com" />
+      </div>
+      <div class="form-grid">
+        <div class="form-row">
+          <label>Target Pages</label>
+          <input type="number" id="maxPages" min="1" value="15" />
+          <p class="muted">With no Starting URLs, discover and visit pages up to this target; shortfalls are reported.</p>
+        </div>
+        <div class="form-row">
+          <label>Same Origin Only</label>
+          <select id="sameOriginOnly">
+            <option value="true" selected>Yes</option>
+            <option value="false">No</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Wait Until</label>
+          <select id="waitUntil">
+            <option value="domcontentloaded" selected>DOM Loaded</option>
+            <option value="load">Window Loaded</option>
+            <option value="networkidle2">Network Idle</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="check-label">
+          <input type="checkbox" id="showBrowser" checked />
+          Show Browser (Debug Mode)
+        </label>
+      </div>
+
+      <div class="flow-builder">
+        <div class="flow-header">
+          <h2>URL Sources</h2>
+        </div>
+        <p class="muted">Leave URLs blank to discover pages automatically from links and optional sitemap files, aiming for the Target Pages count.</p>
+        <div class="form-row">
+          <label for="startingUrls">Starting URLs (Optional)</label>
+          <textarea id="startingUrls" rows="4" placeholder="https://www.example.com&#10;https://www.example.com/products"></textarea>
+        </div>
+        <div class="form-row">
+          <label class="check-label">
+            <input type="checkbox" id="findPagesInSitemaps" checked />
+            Include URLs from sitemap.xml and robots.txt sitemap references
+          </label>
+        </div>
+      </div>
+
+      <div class="flow-builder">
+        <div class="flow-header">
+          <h2>Pre-Audit Actions</h2>
+          <div class="toolbar">
+            <a class="pill" href="/action-templates.html?type=pre">Templates</a>
+            <button type="button" id="addPreAuditStep">+ Add Pre-Audit Action</button>
+          </div>
+        </div>
+        <p class="muted">Runs once on the first loaded page before the crawl continues. Steps execute top-to-bottom in sequence. Use arrows to reorder.</p>
+        <div id="preAuditSteps"></div>
+      </div>
+
+      <div class="flow-builder">
+        <div class="flow-header">
+          <h2>On Page Actions</h2>
+          <div class="toolbar">
+            <a class="pill" href="/action-templates.html?type=post">Templates</a>
+            <button type="button" id="addOnPageStep">+ Add On Page Action</button>
+          </div>
+        </div>
+        <p class="muted">Runs on every scanned page after navigation. Steps execute top-to-bottom in sequence. Use arrows to reorder.</p>
+        <div id="onPageSteps"></div>
+      </div>
+
+      <div class="flow-builder">
+        <div class="flow-header">
+          <h2>Rules</h2>
+          <div class="toolbar">
+            <a class="pill" href="/rule-sets.html">Rule Sets</a>
+            <button type="button" id="saveRulesAsSet">Save Rules As Set</button>
+            <button type="button" id="addRule">+ Add Rule</button>
+          </div>
+        </div>
+        <p class="muted">Rules are evaluated on every scanned page after requests, cookies, console messages, and dataLayer values have been captured.</p>
+        <div id="rulesList"></div>
+      </div>
+
+      <div class="flow-builder">
+        <div class="flow-header">
+          <h2>Interaction Flow</h2>
+          <div class="toolbar">
+            <a class="pill" href="/interaction-flow-templates.html">Templates</a>
+            <button type="button" id="addStep">+ Add Step</button>
+          </div>
+        </div>
+        <div id="steps"></div>
+      </div>
+
+      <div class="actions">
+        <button type="submit">Start Audit</button>
+      </div>
+    </form>
+
+    <div id="status" class="status audit-run-status hidden">
+      <div id="auditRunContext" class="audit-run-context hidden"></div>
+      <div class="progress">
+        <div id="bar"></div>
+      </div>
+      <div id="statusText"></div>
+    </div>
+
+    <div class="layout">
+      <div id="results" class="hidden"></div>
+      <div id="liveLogs" class="logs hidden">
+        <div class="logs-header">
+          <h2>Backend Logs</h2>
+          <div class="log-actions">
+            <button id="clearLogs" type="button">Clear</button>
+            <label class="pill"><input id="autoscroll" type="checkbox" checked> auto-scroll</label>
+          </div>
+        </div>
+        <div id="logStream" class="log-stream"></div>
+      </div>
+    </div>
+
+    <div id="modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="flex" style="gap:8px; align-items:center;">
+            <button id="modalBack" type="button" class="pill hidden">Back</button>
+            <div id="modalTitle">Details</div>
+          </div>
+          <button id="modalClose" type="button">Close</button>
+        </div>
+        <div id="modalBody" class="modal-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/session.js"></script>
+  <script src="/api.js"></script>
+  <script src="/shared-layout.js"></script>
+  <script src="/app.js"></script>
+  <script src="/json-inspector.js"></script>
+  <script src="/report-ui.js"></script>
+  <script src="/helpers.js"></script>
+  <script src="/rules.js"></script>
+</body>
+
+</html>
+

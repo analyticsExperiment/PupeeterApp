@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Free Audit Action Templates</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+  <div class="container console-page">
+    <div class="page-heading">
+      <div>
+        <h1 id="pageTitle">Action Templates</h1>
+        <p class="sub" id="pageSub">Create reusable ordered action steps.</p>
+      </div>
+      <div class="toolbar">
+        <button class="pill hidden" id="backToTemplates" type="button">Back to Templates</button>
+        <button class="button-style" id="newTemplate" type="button">New Template</button>
+      </div>
+    </div>
+
+    <div class="management-layout two-panel">
+      <aside class="section manager-list-panel">
+        <input id="templateSearch" type="text" placeholder="Search templates..." />
+        <div id="templateList" class="config-list"></div>
+      </aside>
+
+      <section class="section manager-editor-panel">
+        <div class="form-grid two">
+          <div class="form-row">
+            <label>Template Name</label>
+            <input id="templateName" type="text" placeholder="Accept cookies, login, open nav..." />
+          </div>
+          <div class="form-row">
+            <label>Description</label>
+            <input id="templateDescription" type="text" placeholder="What this template does" />
+          </div>
+        </div>
+
+        <div class="flow-builder">
+          <div class="flow-header">
+            <h2>Ordered Steps</h2>
+            <button id="addStep" type="button">+ Add Step</button>
+          </div>
+          <div id="steps"></div>
+        </div>
+
+        <div class="actions spread">
+          <div class="toolbar">
+            <button id="deleteTemplate" class="danger-button" type="button">Delete</button>
+            <button id="duplicateTemplate" type="button">Duplicate</button>
+            <button id="applyTemplate" type="button">Apply To Create Audit</button>
+          </div>
+          <button id="saveTemplate" class="button-style" type="button">Save Template</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="/session.js"></script>
+  <script src="/api.js"></script>
+  <script src="/shared-layout.js"></script>
+  <script src="/action-builder.js"></script>
+  <script src="/action-templates.js?v=20260515a"></script>
+</body>
+
+</html>

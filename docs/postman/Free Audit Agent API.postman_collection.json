@@ -1,0 +1,321 @@
+{
+  "info": {
+    "name": "Free Audit Agent API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Programmatic API coverage for Free Audit audits, interactions, reports, exports, and agent schema."
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register Dummy Account",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\",\n  \"displayName\": \"Free Audit API Dummy\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login Dummy Account",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Agent Schema",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/agent/schema"
+      }
+    },
+    {
+      "name": "Build Complete Audit",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const json = pm.response.json();",
+              "if (json.auditConfig && json.auditConfig.id) pm.environment.set('auditConfigId', json.auditConfig.id);",
+              "if (json.auditRun && json.auditRun.id) pm.environment.set('auditId', json.auditRun.id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/agent/audits",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Postman API Audit\",\n  \"description\": \"Created from the Postman agent collection.\",\n  \"run\": true,\n  \"config\": {\n    \"domain\": \"{{targetUrl}}\",\n    \"urlSources\": [\"{{targetUrl}}\"],\n    \"maxPages\": 1,\n    \"maxDepth\": 0,\n    \"sameOriginOnly\": true,\n    \"waitUntil\": \"domcontentloaded\",\n    \"showBrowser\": false,\n    \"includeSitemaps\": false,\n    \"options\": {\n      \"browserEngine\": \"playwright\",\n      \"workerMode\": \"custom\",\n      \"simultaneousWorkers\": 1\n    }\n  },\n  \"postActionTemplates\": [\n    {\n      \"name\": \"Postman Short Wait\",\n      \"steps\": [\n        { \"action\": \"waitForTimeout\", \"timeout\": 250 }\n      ]\n    }\n  ],\n  \"ruleSets\": [\n    {\n      \"name\": \"Postman URL Rule Set\",\n      \"rules\": [\n        {\n          \"name\": \"Final URL exists\",\n          \"conditions\": [],\n          \"assertions\": [\n            { \"type\": \"pageField\", \"field\": \"finalUrl\", \"operator\": \"exists\" }\n          ]\n        }\n      ]\n    }\n  ]\n}"
+        }
+      }
+    },
+    {
+      "name": "Run Existing Audit Config",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const json = pm.response.json();",
+              "if (json.auditRun && json.auditRun.id) pm.environment.set('auditId', json.auditRun.id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/agent/audits/{{auditConfigId}}/run"
+      }
+    },
+    {
+      "name": "Audit Status",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/audit/{{auditId}}/status" }
+    },
+    {
+      "name": "Audit Results",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/audit/{{auditId}}/results" }
+    },
+    {
+      "name": "Audit JSON Export",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/audit/{{auditId}}/json" }
+    },
+    {
+      "name": "Audit CSV Export",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/audit/{{auditId}}/csv" }
+    },
+    {
+      "name": "Build Complete Interaction",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const json = pm.response.json();",
+              "if (json.interactionConfig && json.interactionConfig.id) pm.environment.set('interactionConfigId', json.interactionConfig.id);",
+              "if (json.interactionRun && json.interactionRun.id) pm.environment.set('interactionRunId', json.interactionRun.id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/agent/interactions",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Postman API Interaction\",\n  \"description\": \"Created from the Postman agent collection.\",\n  \"run\": true,\n  \"config\": {\n    \"startingUrl\": \"{{targetUrl}}\",\n    \"waitUntil\": \"domcontentloaded\",\n    \"showBrowser\": false,\n    \"generalSettings\": {\n      \"browserEngine\": \"playwright\"\n    },\n    \"steps\": [\n      { \"name\": \"Open target\", \"action\": \"openUrl\", \"value\": \"{{targetUrl}}\", \"timeout\": 8000 },\n      { \"name\": \"Assert URL\", \"action\": \"assertUrlContains\", \"value\": \"example.com\", \"timeout\": 5000 }\n    ]\n  },\n  \"flowTemplates\": [\n    {\n      \"name\": \"Postman Interaction Wait\",\n      \"steps\": [\n        { \"name\": \"Pause\", \"action\": \"waitForTimeout\", \"timeout\": 250 }\n      ]\n    }\n  ]\n}"
+        }
+      }
+    },
+    {
+      "name": "Run Existing Interaction Config",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const json = pm.response.json();",
+              "if (json.interactionRun && json.interactionRun.id) pm.environment.set('interactionRunId', json.interactionRun.id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/agent/interactions/{{interactionConfigId}}/run"
+      }
+    },
+    {
+      "name": "Interaction Status",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/interaction-runs/{{interactionRunId}}/status" }
+    },
+    {
+      "name": "Interaction Results",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/interaction-runs/{{interactionRunId}}/results" }
+    },
+    {
+      "name": "Interaction JSON Export",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/interaction-runs/{{interactionRunId}}/json" }
+    },
+    {
+      "name": "Interaction CSV Export",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/interaction-runs/{{interactionRunId}}/csv" }
+    },
+    {
+      "name": "List Audit Configs",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/audit-configs" }
+    },
+    {
+      "name": "Get Audit Config",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/audit-configs/{{auditConfigId}}" }
+    },
+    {
+      "name": "Run Audit Config Via UI API",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const json = pm.response.json();",
+              "if (json.id) pm.environment.set('auditId', json.id);"
+            ]
+          }
+        }
+      ],
+      "request": { "method": "POST", "url": "{{baseUrl}}/api/audit-configs/{{auditConfigId}}/run" }
+    },
+    {
+      "name": "List Pre Action Templates",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/action-templates?type=pre" }
+    },
+    {
+      "name": "List Post Action Templates",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/action-templates?type=post" }
+    },
+    {
+      "name": "List Rule Sets",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/rule-sets" }
+    },
+    {
+      "name": "List Interaction Flow Templates",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/interaction-flow-templates" }
+    },
+    {
+      "name": "List Interaction Configs",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/interaction-configs" }
+    },
+    {
+      "name": "Get Interaction Config",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/interaction-configs/{{interactionConfigId}}" }
+    },
+    {
+      "name": "Run Interaction Config Via UI API",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const json = pm.response.json();",
+              "if (json.id) pm.environment.set('interactionRunId', json.id);"
+            ]
+          }
+        }
+      ],
+      "request": { "method": "POST", "url": "{{baseUrl}}/api/interaction-configs/{{interactionConfigId}}/run" }
+    },
+    {
+      "name": "List Interaction Runs",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/interaction-runs?limit=50" }
+    },
+    {
+      "name": "Extension Pairing",
+      "item": [
+        {
+          "name": "Create Pairing Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.token) pm.environment.set('extensionToken', json.token);",
+                  "if (json.tokenRecord && json.tokenRecord.id) pm.environment.set('extensionTokenId', json.tokenRecord.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/extension/tokens",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"Postman Free Audit Recorder\"\n}"
+            }
+          }
+        },
+        {
+          "name": "List Pairing Tokens",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/extension/tokens" }
+        },
+        {
+          "name": "Extension Status",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{extensionToken}}" }],
+            "url": "{{baseUrl}}/api/extension/status"
+          }
+        },
+        {
+          "name": "Save Recorded Flow Template",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{extensionToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/extension/interaction-flow-template",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman Recorded Flow\",\n  \"description\": \"Saved through the extension API from Postman.\",\n  \"steps\": [\n    { \"name\": \"Open target\", \"action\": \"openUrl\", \"value\": \"{{targetUrl}}\", \"timeout\": 8000 }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Save Recorded Interaction Config",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.config && json.config.id) pm.environment.set('interactionConfigId', json.config.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{extensionToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/extension/interaction-config",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman Recorded Interaction\",\n  \"description\": \"Saved through the extension API from Postman.\",\n  \"startingUrl\": \"{{targetUrl}}\",\n  \"waitUntil\": \"domcontentloaded\",\n  \"showBrowser\": false,\n  \"generalSettings\": { \"browserEngine\": \"playwright\" },\n  \"steps\": [\n    { \"name\": \"Open target\", \"action\": \"openUrl\", \"value\": \"{{targetUrl}}\", \"timeout\": 8000 }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Revoke Pairing Token",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/api/extension/tokens/{{extensionTokenId}}" }
+        }
+      ]
+    }
+  ]
+}

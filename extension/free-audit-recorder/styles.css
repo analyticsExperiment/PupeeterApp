@@ -1,0 +1,103 @@
+:root {
+  color-scheme: light;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  width: 360px;
+  background: #f8fafc;
+  color: #111827;
+}
+
+.popup {
+  padding: 14px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 18px;
+}
+
+h2 {
+  margin: 14px 0 8px;
+  font-size: 13px;
+}
+
+p {
+  margin: 4px 0 12px;
+  color: #475569;
+}
+
+label {
+  display: block;
+  margin: 10px 0;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+input, select {
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 4px;
+  padding: 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.check-label input[type="checkbox"] { width: auto; margin: 0 6px 0 0; vertical-align: middle; }
+
+button {
+  min-height: 34px;
+  border: 1px solid #1f2937;
+  border-radius: 6px;
+  background: #111827;
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #334155;
+}
+
+button:disabled { opacity: .45; cursor: not-allowed; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid #226a78; outline-offset: 2px; }
+#startRecording:not(:disabled), #saveConfig:not(:disabled) { background: #e8b931; border-color: #e8b931; color: #20272b; }
+#startAttached:not(:disabled) { background: #e8b931; border-color: #e8b931; color: #20272b; }
+.attached-panel, .account-panel { margin: 16px 0; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; }
+.attached-panel h2, .account-panel h2 { margin-top: 0; }
+.attached-panel p, .account-panel p { font-size: 12px; line-height: 1.35; }
+.attached-panel a { font-size: 12px; }
+.account-panel details { margin-top: 10px; font-size: 12px; }
+li { overflow-wrap: anywhere; }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.wide {
+  width: 100%;
+  margin-top: 8px;
+}
+
+ol {
+  max-height: 210px;
+  overflow: auto;
+  padding-left: 18px;
+  margin: 0;
+}
+
+li {
+  margin: 6px 0;
+  line-height: 1.3;
+}
+
+.muted {
+  color: #64748b;
+}

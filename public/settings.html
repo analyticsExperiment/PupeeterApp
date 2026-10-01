@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Free Audit Settings</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+  <div class="container console-page">
+    <div class="page-heading">
+      <div>
+        <h1>Settings</h1>
+        <p class="sub">Account and audit console preferences.</p>
+      </div>
+    </div>
+
+    <div class="console-grid-two">
+      <section class="section">
+        <h2>Account</h2>
+        <table class="table"><tbody id="accountRows"><tr><td class="muted">Loading...</td></tr></tbody></table>
+      </section>
+      <section class="section">
+        <h2>Defaults</h2>
+        <div id="defaultConfig" class="muted">Loading...</div>
+      </section>
+    </div>
+
+    <section class="section extension-settings">
+      <div class="section-header">
+        <div>
+          <h2>Chrome Extension / Recorder</h2>
+          <p class="muted">Create a pairing token for the Free Audit Recorder extension. Tokens authorize saves for interaction flow templates and interaction configs.</p>
+        </div>
+        <button id="createExtensionToken" class="button-style" type="button">Create Pairing Token</button>
+      </div>
+      <div id="newExtensionToken" class="extension-token-output hidden"></div>
+      <table class="table">
+        <thead>
+          <tr><th>Label</th><th>Created</th><th>Last Used</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="extensionTokenRows"><tr><td colspan="5" class="muted">Loading...</td></tr></tbody>
+      </table>
+    </section>
+  </div>
+
+  <script src="/session.js"></script>
+  <script src="/api.js"></script>
+  <script src="/shared-layout.js"></script>
+  <script src="/settings.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,98 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Free Audit History</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/json-inspector.css" />
+  <link rel="stylesheet" href="/report-ui.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="flex" style="justify-content: space-between; align-items: center; gap: 12px;">
+      <h1>Free Audit History</h1>
+      <div class="flex" style="gap:8px; align-items:center;">
+        <a class="pill" href="/dashboard.html">Dashboard</a>
+        <a class="pill" href="/">Run New Audit</a>
+        <button class="pill" id="logoutBtn" data-action="logout" type="button">Logout</button>
+      </div>
+    </div>
+    <p class="sub">Browse previous audits, review timelines, and reopen full reports.</p>
+
+    <div class="section" id="auditListSection">
+      <form id="historyFilters" class="history-filters" role="search">
+        <label>Search audits<input id="historySearch" type="search" placeholder="Domain, config name, or run ID" /></label>
+        <label>Status<select id="historyStatus"><option value="">All statuses</option><option>completed</option><option>failed</option><option>running</option><option>queued</option></select></label>
+        <label>From<input id="historyFrom" type="date" /></label>
+        <label>To<input id="historyTo" type="date" /></label>
+        <label class="history-check"><input id="historyFailed" type="checkbox" />Failed rules only</label>
+        <button class="pill" type="reset">Reset filters</button>
+      </form>
+      <div id="historyCount" class="history-count" role="status">Loading recent audits...</div>
+      <div class="table-wrap audit-history-wrap" tabindex="0" role="region" aria-label="Recent audits">
+      <table class="table audit-table">
+        <thead>
+          <tr>
+            <th>Started</th>
+            <th>Duration</th>
+            <th>Status</th>
+            <th>Domain</th>
+            <th>Config</th>
+            <th>Total Pages</th>
+            <th>Network Requests</th>
+            <th>Failed Rules</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="auditRows">
+          <tr>
+            <td colspan="9" class="muted">Loading audits...</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="section" id="auditDetail">
+      <h2 class="section-title">Latest Audit Details</h2>
+      <div class="muted">Select an audit from the list to see its key metrics and shortcuts.</div>
+    </div>
+  </div>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="flex" style="gap:8px; align-items:center;">
+          <button id="modalBack" type="button" class="pill hidden">Back</button>
+          <div id="modalTitle">Details</div>
+        </div>
+        <button id="modalClose" type="button">Close</button>
+      </div>
+      <div id="modalBody" class="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
+  <script src="/session.js"></script>
+  <script src="/api.js"></script>
+  <script src="/shared-layout.js"></script>
+  <script src="/json-inspector.js"></script>
+  <script src="/report-ui.js"></script>
+  <script src="/helpers.js"></script>
+  <script src="/audits.js"></script>
+</body>
+
+</html>
+
